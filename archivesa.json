@@ -31,7 +31,33 @@
            "metadata": {
                 "description": "Enable or disable encryption on the storage account using Microsoft-managed encryption keys with Storage Service Encryption. True = Enabled, False = Disabled."
             }
-        }
+        },
+        "containerOneName": {
+           "type": "string",
+           "defaultValue": "Archive1",
+           "metadata": {
+                "description": "Name of first blob container."
+            }
+        },
+        "containerTwoName": {
+            "type": "string",
+            "defaultValue": "Archive2",
+            "metadata": {
+                 "description": "Name of first blob container."
+             }
+         },
+         "containerAccess": {
+            "type": "string",
+            "defaultValue": "None",
+            "allowedValues": [
+                "None",
+                "Blob",
+                "Container"
+            ],
+            "metadata": {
+                 "description": ""
+             }
+         }
     },
     "variables": {
         "location": "[resourceGroup().location]",
@@ -43,6 +69,11 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2018-07-01",
             "location": "[variables('location')]",
+            "dependsOn": [],
+            "sku": {
+                "name": "[parameters('accountType')]"
+            },
+            "kind": "StorageV2",
             "properties": {
                 "accessTier": "[parameters('accessTier')]",
                 "supportsHttpsTrafficOnly": true,
@@ -59,11 +90,30 @@
 
                 }
             },
-            "dependsOn": [],
-            "sku": {
-                "name": "[parameters('accountType')]"
-            },
-            "kind": "StorageV2"
+            "resources": [
+                {
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-03-01-preview",
+                    "name": "[concat('default/', parameters('containerOneName'))]",
+                    "dependsOn": [
+                        "[variables('saName')]"
+                    ],
+                    "properties": {
+                        "publicAccess": "[parameters('containerAccess')]"
+                    }
+                },
+                {
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-03-01-preview",
+                    "name": "[concat('default/', parameters('containerTwoName'))]",
+                    "dependsOn": [
+                        "[variables('saName')]"
+                    ],
+                    "properties": {
+                        "publicAccess": "[parameters('containerAccess')]"
+                    }
+                }
+            ]
         }
     ],
     "outputs": {}
