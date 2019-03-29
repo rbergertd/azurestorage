@@ -7,19 +7,40 @@
             "defaultValue": "Standard_LRS",
             "allowedValues": [
                 "Standard_LRS",
-                "Standard_RAGRS"
+                "Standard_GRS",
+                "Standard_ZRS",
+                "Premium_LRS"
+            ]
+        },
+        "kind": {
+            "type": "string",
+            "defaultValue": "StorageV2",
+            "allowedValues": [
+                "StorageV2",
+                "Storage"
             ]
         },
         "accessTier": {
             "type": "string",
             "defaultValue": "Cold",
             "metadata": {
-                "description": "Storage tier. Cold is for less-frequently accessed data, with a lower cost per GB to store, but a higher cost per GB to access. Hot is for frequently accessed data, with a higher cost per GB to store, but a lower cost per GB to access."
+                "description": "Storage tier. Cold is for less-frequently accessed data, with a lower cost per GB. Hot is for frequently accessed data, with a higher cost per GB."
             },
             "allowedValues": [
                 "Cold",
                 "Hot"
             ]
+        },
+        "enableSmbShare": {
+           "type": "bool",
+           "defaultValue": true,
+           "allowedValues": [
+               true,
+               false
+           ],
+           "metadata": {
+                "description": "Enables Azure Files AAD Integration for SMB if sets to true."
+            }
         },
         "saEncryption": {
            "type": "bool",
@@ -29,7 +50,18 @@
                false
            ],
            "metadata": {
-                "description": "Enable or disable encryption on the storage account using Microsoft-managed encryption keys with Storage Service Encryption. True = Enabled, False = Disabled."
+                "description": "Enable or disable encryption on the storage account. True = Enabled, False = Disabled."
+            }
+        },
+        "supportsHttpsTrafficOnly": {
+            "type": "bool",
+            "defaultValue": true,
+            "allowedValues": [
+                true,
+                false
+            ],
+            "metadata": {
+                "description": "Enable or disable Advanced Threat Protection. True = Enabled, False = Disabled."
             }
         }
     },
@@ -45,8 +77,10 @@
             "location": "[variables('location')]",
             "properties": {
                 "accessTier": "[parameters('accessTier')]",
-                "supportsHttpsTrafficOnly": true,
+                "supportsHttpsTrafficOnly": "[parameters('supportsHttpsTrafficOnly')]",
+                "azureFilesAadIntegration": "[parameters('enableSmbShare')]",
                 "encryption": {
+                    "keySource": "Microsoft.Storage",
                     "services": {
                       "blob": {
                         "enabled": "[parameters('saEncryption')]"
@@ -54,16 +88,14 @@
                       "file": {
                         "enabled": "[parameters('saEncryption')]"
                       }
-                    },
-                "keySource": "Microsoft.Storage"
-
+                    }
                 }
             },
             "dependsOn": [],
             "sku": {
                 "name": "[parameters('accountType')]"
             },
-            "kind": "StorageV2"
+            "kind": "[parameters('kind')]"
         }
     ],
     "outputs": {}
