@@ -36,14 +36,14 @@
            "type": "string",
            "defaultValue": "archive1",
            "metadata": {
-                "description": "Name of first blob container."
+                "description": "Name of first blob container. Must be all lower-case and numbers."
             }
         },
         "containerTwoName": {
             "type": "string",
             "defaultValue": "archive2",
             "metadata": {
-                 "description": "Name of first blob container."
+                 "description": "Name of first blob container. Must be all lower-case and numbers."
              }
          },
          "containerAccess": {
