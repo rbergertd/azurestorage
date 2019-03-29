@@ -12,12 +12,12 @@
         },
         "accessTier": {
             "type": "string",
-            "defaultValue": "Cold",
+            "defaultValue": "Cool",
             "metadata": {
                 "description": "Storage tier. Cold is for less-frequently accessed data, with a lower cost per GB to store, but a higher cost per GB to access. Hot is for frequently accessed data, with a higher cost per GB to store, but a lower cost per GB to access."
             },
             "allowedValues": [
-                "Cold",
+                "Cool",
                 "Hot"
             ]
         },
@@ -34,14 +34,14 @@
         },
         "containerOneName": {
            "type": "string",
-           "defaultValue": "Archive1",
+           "defaultValue": "archive1",
            "metadata": {
                 "description": "Name of first blob container."
             }
         },
         "containerTwoName": {
             "type": "string",
-            "defaultValue": "Archive2",
+            "defaultValue": "archive2",
             "metadata": {
                  "description": "Name of first blob container."
              }
