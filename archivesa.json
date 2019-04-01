@@ -48,7 +48,7 @@
          },
          "containerAccess": {
             "type": "string",
-            "defaultValue": "None",
+            "defaultValue": "Blob",
             "allowedValues": [
                 "None",
                 "Blob",
@@ -56,6 +56,24 @@
             ],
             "metadata": {
                  "description": ""
+             }
+         },
+         "defaultAccess": {
+            "type": "string",
+            "defaultValue": "Allow",
+            "allowedValues": [
+                "Allow",
+                "Deny"
+            ],
+            "metadata": {
+                 "description": "If you do not want to limit IP/IP range access, set this to Allow."
+             }
+         },
+         "limitIpAccess": {
+            "type": "string",
+            "defaultValue": "97.96.157.22",
+            "metadata": {
+                 "description": "If setting Default Access to Deny, please specify your public IP address or IP range that you want to be able to access the blob's inside of the storage account. Examples: 97.96.157.22 or 97.96.157.0/24."
              }
          }
     },
@@ -88,7 +106,16 @@
                     },
                 "keySource": "Microsoft.Storage"
 
-                }
+                },
+                "networkAcls": {
+                    "ipRules": [
+                      {
+                        "value": "[parameters('limitIpAccess')]",
+                        "action": "Allow"
+                      }
+                    ],
+                    "defaultAction": "[parameters('defaultAccess')]"
+                  }
             },
             "resources": [
                 {
