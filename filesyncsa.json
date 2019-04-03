@@ -1,0 +1,97 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "accountType": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_RAGRS"
+            ]
+        },
+        "accessTier": {
+            "type": "string",
+            "defaultValue": "Cool",
+            "metadata": {
+                "description": "Storage tier. Cold is for less-frequently accessed data, with a lower cost per GB to store, but a higher cost per GB to access. Hot is for frequently accessed data, with a higher cost per GB to store, but a lower cost per GB to access."
+            },
+            "allowedValues": [
+                "Cool",
+                "Hot"
+            ]
+        },
+        "saEncryption": {
+           "type": "bool",
+           "defaultValue": true,
+           "allowedValues": [
+               true,
+               false
+           ],
+           "metadata": {
+                "description": "Enable or disable encryption on the storage account using Microsoft-managed encryption keys with Storage Service Encryption. True = Enabled, False = Disabled."
+            }
+        },
+         "defaultAccess": {
+            "type": "string",
+            "defaultValue": "Allow",
+            "allowedValues": [
+                "Allow",
+                "Deny"
+            ],
+            "metadata": {
+                 "description": "If you do not want to limit IP/IP range access, set this to Allow."
+             }
+         },
+         "limitIpAccess": {
+            "type": "string",
+            "defaultValue": "97.96.157.22",
+            "metadata": {
+                 "description": "If setting Default Access to Deny, please specify your public IP address or IP range that you want to be able to access the blob's inside of the storage account. Examples: 97.96.157.22 or 97.96.157.0/24."
+             }
+         }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "saName": "[concat('sa', uniquestring(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('saName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2018-07-01",
+            "location": "[variables('location')]",
+            "dependsOn": [],
+            "sku": {
+                "name": "[parameters('accountType')]"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "accessTier": "[parameters('accessTier')]",
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                      "blob": {
+                        "enabled": "[parameters('saEncryption')]"
+                      },
+                      "file": {
+                        "enabled": "[parameters('saEncryption')]"
+                      }
+                    },
+                "keySource": "Microsoft.Storage"
+
+                },
+                "networkAcls": {
+                    "ipRules": [
+                      {
+                        "value": "[parameters('limitIpAccess')]",
+                        "action": "Allow"
+                      }
+                    ],
+                    "defaultAction": "[parameters('defaultAccess')]"
+                  }
+            }
+        }
+    ],
+    "outputs": {}
+}
