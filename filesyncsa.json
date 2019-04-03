@@ -49,11 +49,19 @@
             "metadata": {
                  "description": "If setting Default Access to Deny, please specify your public IP address or IP range that you want to be able to access the blob's inside of the storage account. Examples: 97.96.157.22 or 97.96.157.0/24."
              }
+         },
+         "syncGroup": {
+            "type": "string",
+            "defaultValue": "On-Prem Sync Group",
+            "metadata": {
+                 "description": "Name of the sync group."
+             }
          }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "saName": "[concat('sa', uniquestring(resourceGroup().id))]"
+        "saName": "[concat('sa', uniquestring(resourceGroup().id))]",
+        "storageSyncName": "Storage Sync"
     },
     "resources": [
         {
@@ -91,7 +99,26 @@
                     "defaultAction": "[parameters('defaultAccess')]"
                   }
             }
-        }
+        },
+        {
+            "name": "[variables('storageSyncName')]",
+            "type": "Microsoft.StorageSync/storageSyncServices",
+            "apiVersion": "2018-10-01",
+            "dependsOn": [
+                "[variables('saName')]"
+            ],
+            "location": "[variables('location')]",
+            "properties": {},
+            "resources": [
+                {
+                    "name": "[parameters('syncGroup')]",
+                    "type": "Microsoft.StorageSync/storageSyncServices/syncGroups",
+                    "apiVersion": "2018-10-01",
+                    "properties": {},
+                    "resources": []
+                  }
+            ]
+          }
     ],
     "outputs": {}
 }
