@@ -99,26 +99,7 @@
                     "defaultAction": "[parameters('defaultAccess')]"
                   }
             }
-        },
-        {
-            "name": "[variables('storageSyncName')]",
-            "type": "Microsoft.StorageSync/storageSyncServices",
-            "apiVersion": "2018-10-01",
-            "dependsOn": [
-                "[variables('saName')]"
-            ],
-            "location": "[variables('location')]",
-            "properties": {},
-            "resources": [
-                {
-                    "name": "[parameters('syncGroup')]",
-                    "type": "Microsoft.StorageSync/storageSyncServices/syncGroups",
-                    "apiVersion": "2018-10-01",
-                    "properties": {},
-                    "resources": []
-                  }
-            ]
-          }
+        }
     ],
     "outputs": {}
 }
