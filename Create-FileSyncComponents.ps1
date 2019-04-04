@@ -2,7 +2,9 @@ $fileShareName = "filesync"
 $storageAccount = Get-AzStorageAccount -ResourceGroupName rb-azstorage-fs3 | `
               where StorageAccountName -like sa*
 $storageSyncName = "storagesync"
+
 $storageAccountTenantId = "d5c77776-8b4c-4ceb-81da-566aba9c59c5"
+$storageAccountResourceId = "/subscriptions/c2ded452-9420-4776-89e6-0f31e36d961b/resourceGroups/rb-azstorage-fs3/providers/Microsoft.Storage/storageAccounts/sa3m3neuvprwuzm"
 $syncGroupName = "syncgroup"
 $cloudEndpointName = "cloudendpoint"
 $resourcegroup ='rb-azstorage-fs3'
@@ -32,7 +34,8 @@ $syncGroupName = "syncgroup"
 New-AzStorageSyncGroup -ResourceGroupName $resourcegroup -Name $syncGroupName -StorageSyncServiceName $storageSyncName
 
 #Make a Cloud EndPoint
-New-AzStorageSyncCloudEndpoint -ResourceGroupName $resourcegroup -StorageSyncServiceName $storageSyncName -SyncGroupName $syncGroupName -Name $cloudEndpointName -StorageAccountResourceId $storageAccount -AzureFileShareName $fileShareName -StorageAccountTenantId $storageAccountTenantId
+New-AzStorageSyncCloudEndpoint -ResourceGroupName $resourcegroup -StorageSyncServiceName $storageSyncName -SyncGroupName $syncGroupName -Name $cloudEndpointName -StorageAccountResourceId $storageAccountResourceId -AzureFileShareName $fileShareName -StorageAccountTenantId $storageAccountTenantId
 
-New-AzStorageSyncCloudEndpoint -ResourceGroupName "myResourceGroup" -StorageSyncServiceName "myStorageSyncServiceName" -SyncGroupName "mySyncGroupName" -Name "myCloudEndpointName" -StorageAccountResourceId $storageAccountResourceId -AzureFileShareName "myAzureFileShareName" -StorageAccountTenantId "myStorageAccountTenantId"
-    Get-AzTenant
+
+#Get TenantId, StorageAccountResourceId, etc.
+Get-AzTenant
