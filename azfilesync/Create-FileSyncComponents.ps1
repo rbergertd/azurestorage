@@ -8,10 +8,8 @@ $storageAccountResourceId = "/subscriptions/c2ded452-9420-4776-89e6-0f31e36d961b
 $syncGroupName = "syncgroup"
 $cloudEndpointName = "cloudendpoint"
 $resourcegroup ='rb-azstorage-fs3'
-$location = 'deploymentlocation'
+$location = 'centralus'
 
-Install-Module Az
-Install-Module Az.StorageSync
 Import-Module Az
 Import-Module Az.StorageSync
 Connect-AzAccount
@@ -29,5 +27,6 @@ New-AzStorageSyncGroup -ResourceGroupName $resourcegroup -Name $syncGroupName -S
 New-AzStorageSyncCloudEndpoint -ResourceGroupName $resourcegroup -StorageSyncServiceName $storageSyncName -SyncGroupName $syncGroupName -Name $cloudEndpointName -StorageAccountResourceId $storageAccountResourceId -AzureFileShareName $fileShareName -StorageAccountTenantId $storageAccountTenantId
 
 
-#Get TenantId, StorageAccountResourceId, etc.
+#Get TenantId, StorageAccountResourceId, Remove CloudEndpoint, etc.
 Get-AzTenant
+Remove-AzStorageSyncCloudEndpoint -Force -ResourceGroupName "rb-azstorage-fs3" -StorageSyncServiceName "storagesync" -SyncGroupName "syncgroup" -Name "cloudendpoint"
