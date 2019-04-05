@@ -10,6 +10,8 @@ $cloudEndpointName = "cloudendpoint"
 $resourcegroup ='rb-azstorage-fs3'
 $location = 'centralus'
 
+#After the ARM template creates the storage account, we need to get the storage account resource ID, Azure tenant ID, resource group name, and resource group location to move forward with the rest of the automation. 
+#This workflow creates a file share (parameter in Vertex), the Azure Sync Service resource (variable), the SyncGroup (variable), and the Cloud Endpoint (variable). The last step is instaling sync client and registering (step-by-step)
 Import-Module Az
 Import-Module Az.StorageSync
 Connect-AzAccount
