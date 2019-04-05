@@ -17,20 +17,12 @@ Import-Module Az.StorageSync
 Connect-AzAccount
 
 #Create File Share
-$resourcegroup ='rb-azstorage-fs3'
-$fileShareName = "filesync"
-$storageAccount = Get-AzStorageAccount -ResourceGroupName $resourcegroup | `
-              where StorageAccountName -like sa*
 New-AzStorageShare -Context $storageAccount.Context -Name $fileShareName
 
 #Create Sync Service
-$resourcegroup =' rb-azstorage-fs3'
-$storageSyncName = "storagesync"
 New-AzStorageSyncService -ResourceGroupName $resourcegroup -Location $location -StorageSyncServiceName $storageSyncName
 
 #Create Sync Group
-$storageSyncName = "storagesync"
-$syncGroupName = "syncgroup"
 New-AzStorageSyncGroup -ResourceGroupName $resourcegroup -Name $syncGroupName -StorageSyncServiceName $storageSyncName
 
 #Make a Cloud EndPoint
