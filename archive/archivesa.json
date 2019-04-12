@@ -5,6 +5,9 @@
         "accountType": {
             "type": "string",
             "defaultValue": "Standard_LRS",
+            "metadata": {
+                "description": "Choose between either Locally redundant storage, or Globally Redundant with Read Access in the event of a data center failure. Pricing can be seen here: https://azure.microsoft.com/en-us/pricing/details/storage/page-blobs/"
+            },
             "allowedValues": [
                 "Standard_LRS",
                 "Standard_RAGRS"
