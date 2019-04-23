@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "accountType": {
+            "value": "Standard_LRS"
+        },
+        "accessTier": {
+            "value": "Cool"
+        },
+        "saEncryption": {
+            "value": true
+        },
+        "containerOneName": {
+            "value": "archive1"
+        },
+        "containerTwoName": {
+            "value": "archive2"
+        },
+        "containerAccess": {
+            "value": "Blob"
+        },
+        "defaultAccess": {
+            "value": "Allow"
+        },
+        "limitIpAccess": {
+            "value": "97.96.157.22"
+        }
+    }
+}
