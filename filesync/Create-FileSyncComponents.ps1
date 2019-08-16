@@ -1,3 +1,4 @@
+#We'll need to re-structure these cmds to pass thru parameters (Resource group name, storageSyncName, location, etc) as well as 'get' the identifiers (tenantId, resourceId).
 $fileShareName = "filesync"
 $storageAccount = Get-AzStorageAccount -ResourceGroupName rb-azstorage-fs3 | `
               where StorageAccountName -like sa*
@@ -14,6 +15,8 @@ $location = 'centralus'
 #This workflow creates a file share (parameter in Vertex), the Azure Sync Service resource (variable), the SyncGroup (variable), and the Cloud Endpoint (variable). The last step is instaling sync client and registering (step-by-step)
 Import-Module Az
 Import-Module Az.StorageSync
+
+#Authenticate to the Azure tenant - Vertex will obviously not need this step
 Connect-AzAccount
 
 #Create File Share
