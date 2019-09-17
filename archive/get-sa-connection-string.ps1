@@ -1,6 +1,6 @@
 ﻿#Set Resource Group Name and Storage Account Name
-$rgName = "RB-archive"
-$saName = "saksh6j3vmllzlw"
+$rgName = "RB-databroker"
+$saName = "netappcssrc"
 #Login to Az account
 Login-AzAccount
 #Build Storage Connection String - your string will be the last line of the script output. Starting with 'Default' and ending with 'windows.net'. 
